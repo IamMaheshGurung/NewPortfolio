@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} | Mahesh Gurung</title>
+    
+    <!-- Add explicit styles for debugging -->
+    <style>
+        body { background-color: rgb(90, 221, 221); color: white; font-family: Arial, sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .gradient-text { color: black; }
+        h1 { font-size: 3rem; font-weight: bold; }
+    </style>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'rgb(91, 209, 215)',
+                        dark: '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    {{block "head" .}}{{end}}
+</head>
+<body class="bg-black text-white min-h-screen">
+   
+    {{template "navbar" .}}
+    
+    <main>
+        {{block "content" .}}{{end}}
+    </main>
+    
+    {{template "footer" .}}
+    
+    {{block "scripts" .}}{{end}}
+</body>
+</html>

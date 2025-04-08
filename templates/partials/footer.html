@@ -1,0 +1,23 @@
+{{define "footer"}}
+<footer class="bg-black py-12 px-6 border-t border-primary/20">
+    <div class="container mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="text-2xl font-bold text-primary mb-6 md:mb-0">MG.</div>
+            <div class="flex space-x-6">
+                <a href="https://github.com/IamMaheshGurung" class="text-white hover:text-primary transition-colors">
+                    GitHub
+                </a>
+                <a href="https://linkedin.com/in/maheshgurung" class="text-white hover:text-primary transition-colors">
+                    LinkedIn
+                </a>
+                <a href="https://twitter.com/MaheshGurung" class="text-white hover:text-primary transition-colors">
+                    Twitter
+                </a>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-gray-500">
+            © {{ now }} Mahesh Gurung. All rights reserved.
+        </div>
+    </div>
+</footer>
+{{end}}

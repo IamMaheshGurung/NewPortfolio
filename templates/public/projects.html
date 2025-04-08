@@ -1,0 +1,66 @@
+{{template "base" .}}
+
+{{define "head"}}
+<!-- Additional head content for projects page -->
+{{end}}
+
+{{define "content"}}
+<!-- Projects Hero -->
+<section class="min-h-[40vh] flex items-center px-6 pt-32">
+    <div class="container mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-8">
+            <span class="gradient-text">My Projects</span>
+        </h1>
+        <div class="h-1 w-24 bg-primary mb-12"></div>
+        
+        <p class="text-xl text-gray-300 max-w-3xl">
+            Explore a collection of my recent projects. Each project represents a unique 
+            challenge and demonstrates different skills and technologies.
+        </p>
+    </div>
+</section>
+
+<!-- Project Filters -->
+<section class="py-12 px-6">
+    <div class="container mx-auto">
+        <div class="flex flex-wrap gap-4 justify-center" hx-boost="true">
+            <a href="/projects" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-black transition-all {{if not .Filter}}bg-primary text-black{{end}}">
+                All
+            </a>
+            <a href="/projects?filter=web" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-black transition-all {{if eq .Filter "web"}}bg-primary text-black{{end}}">
+                Web
+            </a>
+            <a href="/projects?filter=api" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-black transition-all {{if eq .Filter "api"}}bg-primary text-black{{end}}">
+                API
+            </a>
+            <a href="/projects?filter=mobile" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-black transition-all {{if eq .Filter "mobile"}}bg-primary text-black{{end}}">
+                Mobile
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Grid -->
+
+
+<!-- Load More -->
+{{if .HasMore}}
+<section class="py-12 px-6 text-center">
+    <button class="px-8 py-3 bg-primary text-black font-semibold rounded-md hover:bg-primary/80 transition-all"
+            hx-get="/api/projects?page={{.NextPage}}{{if .Filter}}&filter={{.Filter}}{{end}}"
+            hx-target="#projects-container"
+            hx-swap="beforeend"
+            hx-trigger="click"
+            hx-indicator=".loading">
+        Load More
+    </button>
+    <div class="loading htmx-indicator flex justify-center mt-4">
+        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-primary"></div>
+    </div>
+</section>
+{{end}}
+{{end}}
+
+{{define "scripts"}}
+<!-- Additional scripts for projects page -->
+{{end}}

@@ -1,0 +1,66 @@
+{{template "base" .}}
+
+{{define "head"}}
+<!-- Additional head content for home page -->
+{{end}}
+
+{{define "content"}}
+<!-- Hero Section -->
+<section class="min-h-screen flex items-center px-6 pt-24">
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <h1 class="text-4xl md:text-7xl font-bold leading-tight">
+                    <span class="gradient-text">Hi, I'm Mahesh</span>
+                    <div class="mt-2">I build things for the web</div>
+                </h1>
+                <p class="text-xl text-gray-400">
+                    Full-stack developer specializing in building exceptional digital experiences
+                </p>
+                <div class="flex space-x-4">
+                    <a href="/contact" class="px-6 py-3 bg-primary text-black font-semibold rounded-md hover:bg-primary/80 transition-all transform hover:scale-105">
+                        Get in touch
+                    </a>
+                    <a href="/projects" class="px-6 py-3 border border-primary text-primary font-semibold rounded-md hover:bg-primary/10 transition-all transform hover:scale-105">
+                        View my work
+                    </a>
+                </div>
+            </div>
+            <div class="relative h-80 md:h-[500px] rounded-xl overflow-hidden border-2 border-primary/20">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
+                <img src="/static/images/profile.jpg" alt="Mahesh Gurung" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/500x700?text=Mahesh+Gurung'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack -->
+<section class="py-24 px-6 bg-black/80">
+    <div class="container mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-16">My Tech Stack</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 justify-items-center">
+            <div class="flex flex-col items-center space-y-4 group">
+                <div class="w-20 h-20 bg-black/40 rounded-full flex items-center justify-center border border-primary/20 group-hover:border-primary transition-all">
+                    <span class="text-primary text-3xl">Go</span>
+                </div>
+                <span class="text-sm text-gray-400 group-hover:text-primary">Golang</span>
+            </div>
+            <!-- Add more tech stack items here -->
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="py-24 px-6" 
+         hx-get="/api/featured-projects" 
+         hx-trigger="revealed"
+         hx-swap="innerHTML">
+    <div class="flex justify-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
+    </div>
+</section>
+{{end}}
+
+{{define "scripts"}}
+<!-- Additional scripts for home page -->
+{{end}}

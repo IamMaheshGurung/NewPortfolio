@@ -1,0 +1,233 @@
+{{template "admin" .}}
+
+{{define "admin-head"}}
+<!-- Additional head content for admin dashboard -->
+{{end}}
+
+{{define "admin-content"}}
+<div class="space-y-8">
+    <!-- Stats Summary -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6 hover:border-primary transition-all">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-400 text-sm">Total Blog Posts</p>
+                    <h3 class="text-3xl font-bold mt-2">{{.Stats.BlogCount}}</h3>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg">
+                    <i class="fas fa-blog text-primary text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="{{if gt .Stats.BlogsThisMonth 0}}text-green-400{{else}}text-gray-400{{end}}">
+                    {{if gt .Stats.BlogsThisMonth 0}}+{{end}}{{.Stats.BlogsThisMonth}} this month
+                </span>
+            </div>
+        </div>
+        
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6 hover:border-primary transition-all">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-400 text-sm">Total Projects</p>
+                    <h3 class="text-3xl font-bold mt-2">{{.Stats.ProjectCount}}</h3>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg">
+                    <i class="fas fa-project-diagram text-primary text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="{{if gt .Stats.ProjectsThisMonth 0}}text-green-400{{else}}text-gray-400{{end}}">
+                    {{if gt .Stats.ProjectsThisMonth 0}}+{{end}}{{.Stats.ProjectsThisMonth}} this month
+                </span>
+            </div>
+        </div>
+        
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6 hover:border-primary transition-all">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-400 text-sm">Skills Listed</p>
+                    <h3 class="text-3xl font-bold mt-2">{{.Stats.SkillCount}}</h3>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg">
+                    <i class="fas fa-code text-primary text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm text-gray-400">
+                Last updated {{.Stats.LastSkillUpdate}}
+            </div>
+        </div>
+        
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6 hover:border-primary transition-all">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-400 text-sm">Messages</p>
+                    <h3 class="text-3xl font-bold mt-2">{{.Stats.MessageCount}}</h3>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg">
+                    <i class="fas fa-envelope text-primary text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="{{if gt .Stats.UnreadMessages 0}}text-yellow-400{{else}}text-gray-400{{end}}">
+                    {{.Stats.UnreadMessages}} unread
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="bg-black/40 rounded-xl border border-primary/20 p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold">Recent Activity</h2>
+            <a href="/admin/activity" class="text-primary text-sm hover:text-white transition-colors">View All</a>
+        </div>
+        
+        <div class="space-y-6">
+            {{range .RecentActivity}}
+            <div class="flex items-start space-x-4 border-b border-gray-800 pb-4">
+                <div class="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+                    <i class="{{.Icon}} text-primary"></i>
+                </div>
+                <div>
+                    <p class="font-medium">{{.Description}}</p>
+                    <p class="text-sm text-gray-400 mt-1">{{.Time}}</p>
+                </div>
+            </div>
+            {{else}}
+            <div class="text-center py-6 text-gray-500">
+                No recent activity
+            </div>
+            {{end}}
+        </div>
+    </div>
+    
+    <!-- Quick Actions & Status -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Quick Actions -->
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6 lg:col-span-1">
+            <h2 class="text-xl font-semibold mb-6">Quick Actions</h2>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <a href="/admin/blogs/new" class="bg-black/60 border border-primary/20 rounded-lg p-4 text-center hover:border-primary transition-all">
+                    <i class="fas fa-pen-to-square text-primary text-xl mb-2"></i>
+                    <p class="text-sm">New Blog</p>
+                </a>
+                
+                <a href="/admin/projects/new" class="bg-black/60 border border-primary/20 rounded-lg p-4 text-center hover:border-primary transition-all">
+                    <i class="fas fa-plus-circle text-primary text-xl mb-2"></i>
+                    <p class="text-sm">New Project</p>
+                </a>
+                
+                <a href="/admin/skills/manage" class="bg-black/60 border border-primary/20 rounded-lg p-4 text-center hover:border-primary transition-all">
+                    <i class="fas fa-cog text-primary text-xl mb-2"></i>
+                    <p class="text-sm">Manage Skills</p>
+                </a>
+                
+                <a href="/admin/messages" class="bg-black/60 border border-primary/20 rounded-lg p-4 text-center hover:border-primary transition-all">
+                    <i class="fas fa-envelope-open-text text-primary text-xl mb-2"></i>
+                    <p class="text-sm">View Messages</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Current Status -->
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6 lg:col-span-2">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Current Status</h2>
+                <button hx-get="/admin/status/edit" hx-target="#status-container" class="text-primary text-sm hover:text-white transition-colors">
+                    <i class="fas fa-edit"></i> Update
+                </button>
+            </div>
+            
+            <div id="status-container">
+                <div class="bg-black/60 rounded-lg p-4 border border-primary/20">
+                    <h3 class="font-medium mb-2">Currently Working On</h3>
+                    <p class="text-gray-300">{{.Status.CurrentProject}}</p>
+                    
+                    <div class="mt-4 flex items-center space-x-2">
+                        <div class="h-2 w-2 rounded-full {{if eq .Status.Availability "Available"}}bg-green-500{{else if eq .Status.Availability "Busy"}}bg-yellow-500{{else}}bg-red-500{{end}}"></div>
+                        <span class="text-sm text-gray-400">{{.Status.Availability}}</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-black/60 rounded-lg p-4 border border-primary/20">
+                        <h3 class="font-medium mb-2">Last Updated</h3>
+                        <p class="text-gray-400">{{.Status.LastUpdated}}</p>
+                    </div>
+                    
+                    <div class="bg-black/60 rounded-lg p-4 border border-primary/20">
+                        <h3 class="font-medium mb-2">Upcoming</h3>
+                        <p class="text-gray-400">{{.Status.Upcoming}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Blog Posts & Projects -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Blog Posts -->
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Recent Blog Posts</h2>
+                <a href="/admin/blogs" class="text-primary text-sm hover:text-white transition-colors">View All</a>
+            </div>
+            
+            <div class="space-y-4">
+                {{range .RecentBlogs}}
+                <div class="bg-black/60 rounded-lg p-4 border border-primary/20 hover:border-primary transition-all">
+                    <h3 class="font-medium mb-1">{{.Title}}</h3>
+                    <p class="text-sm text-gray-400 mb-3">Published {{.Date}}</p>
+                    <div class="flex justify-between items-center">
+                        <a href="/admin/blogs/edit/{{.ID}}" class="text-primary text-sm hover:text-white transition-colors">
+                            <i class="fas fa-edit mr-1"></i> Edit
+                        </a>
+                        <span class="text-xs px-2 py-1 rounded-full {{if .Published}}bg-green-500/20 text-green-400{{else}}bg-yellow-500/20 text-yellow-400{{end}}">
+                            {{if .Published}}Published{{else}}Draft{{end}}
+                        </span>
+                    </div>
+                </div>
+                {{else}}
+                <div class="text-center py-6 text-gray-500">
+                    No blog posts yet
+                </div>
+                {{end}}
+            </div>
+        </div>
+        
+        <!-- Recent Projects -->
+        <div class="bg-black/40 rounded-xl border border-primary/20 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Recent Projects</h2>
+                <a href="/admin/projects" class="text-primary text-sm hover:text-white transition-colors">View All</a>
+            </div>
+            
+            <div class="space-y-4">
+                {{range .RecentProjects}}
+                <div class="bg-black/60 rounded-lg p-4 border border-primary/20 hover:border-primary transition-all">
+                    <h3 class="font-medium mb-1">{{.Title}}</h3>
+                    <p class="text-sm text-gray-400 mb-3">Added {{.Date}}</p>
+                    <div class="flex justify-between items-center">
+                        <a href="/admin/projects/edit/{{.ID}}" class="text-primary text-sm hover:text-white transition-colors">
+                            <i class="fas fa-edit mr-1"></i> Edit
+                        </a>
+                        <span class="text-xs px-2 py-1 rounded-full {{if .Featured}}bg-primary/20 text-primary{{else}}bg-gray-500/20 text-gray-400{{end}}">
+                            {{if .Featured}}Featured{{else}}Normal{{end}}
+                        </span>
+                    </div>
+                </div>
+                {{else}}
+                <div class="text-center py-6 text-gray-500">
+                    No projects yet
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
+
+{{define "admin-scripts"}}
+<!-- Additional scripts for admin dashboard -->
+{{end}}

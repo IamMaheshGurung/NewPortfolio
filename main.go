@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
 )
 
@@ -29,9 +31,28 @@ func main() {
 		port = "3000"
 	}
 
+	// Debug: Print the template files that are available
+	files, err := filepath.Glob("./templates/**/*.html")
+	if err != nil {
+		log.Printf("Error finding templates: %v", err)
+	} else {
+		log.Printf("Found templates: %v", files)
+	}
+
+	//setup the templates engine
+	engine := html.New("./templates", ".html")
+	engine.AddFunc("now", func() string {
+		return time.Now().Format("Jan 2")
+	})
+
+	engine.Reload(true)
+
+	engine.Load()
+
 	// Initialize Fiber app
 	app := fiber.New(fiber.Config{
 		AppName:               "Portfolio Website",
+		Views:                 engine,
 		DisableStartupMessage: true,
 		IdleTimeout:           5 * time.Second,
 		ReadTimeout:           5 * time.Second,
@@ -67,7 +88,9 @@ func main() {
 
 	// Routes
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Welcome to my portfolio website!")
+		return c.Render("layouts/base", fiber.Map{
+			"title": "Home",
+		})
 	})
 
 	// Graceful shutdown

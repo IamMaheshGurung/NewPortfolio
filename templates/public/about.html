@@ -1,0 +1,196 @@
+{{template "base" .}}
+
+{{define "head"}}
+<!-- Additional head content for about page -->
+{{end}}
+
+{{define "content"}}
+<!-- About Hero -->
+<section class="min-h-[50vh] flex items-center px-6 pt-32">
+    <div class="container mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-8">
+            <span class="gradient-text">About Me</span>
+        </h1>
+        <div class="h-1 w-24 bg-primary mb-12"></div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="md:col-span-2">
+                <p class="text-xl text-gray-300 mb-6">
+                    Hello! I'm Mahesh, a passionate full-stack developer specializing in web technologies. 
+                    My journey in tech started when I was fascinated by how websites work, leading me to 
+                    explore the world of programming.
+                </p>
+                <p class="text-xl text-gray-300 mb-6">
+                    With expertise in Go, JavaScript, and modern web frameworks, I enjoy building 
+                    scalable and efficient applications that solve real-world problems.
+                </p>
+                <p class="text-xl text-gray-300">
+                    When I'm not coding, you can find me hiking, reading tech blogs, or experimenting
+                    with new technologies to expand my skill set.
+                </p>
+            </div>
+            <div class="relative rounded-xl overflow-hidden border-2 border-primary/20 h-80">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
+                <img src="/static/images/about-me.jpg" alt="Mahesh Gurung" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=About+Me'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience & Education -->
+<section class="py-24 px-6">
+    <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-16 text-center">Experience & Education</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <!-- Experience Timeline -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-primary">Work Experience</h3>
+                
+                <div class="space-y-12">
+                    <div class="relative pl-8 border-l-2 border-primary/30">
+                        <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-primary"></div>
+                        <h4 class="text-xl font-bold">Senior Developer</h4>
+                        <p class="text-primary mb-2">Company Name • 2021 - Present</p>
+                        <p class="text-gray-400">
+                            Lead development of microservices architecture using Go and PostgreSQL.
+                            Implemented CI/CD pipelines and mentored junior developers.
+                        </p>
+                    </div>
+                    
+                    <div class="relative pl-8 border-l-2 border-primary/30">
+                        <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-primary"></div>
+                        <h4 class="text-xl font-bold">Backend Developer</h4>
+                        <p class="text-primary mb-2">Another Company • 2018 - 2021</p>
+                        <p class="text-gray-400">
+                            Developed RESTful APIs and worked on database optimization.
+                            Implemented authentication systems and security measures.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Education Timeline -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-primary">Education</h3>
+                
+                <div class="space-y-12">
+                    <div class="relative pl-8 border-l-2 border-primary/30">
+                        <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-primary"></div>
+                        <h4 class="text-xl font-bold">Master's in Computer Science</h4>
+                        <p class="text-primary mb-2">University Name • 2016 - 2018</p>
+                        <p class="text-gray-400">
+                            Specialized in software engineering and distributed systems.
+                            Graduated with honors.
+                        </p>
+                    </div>
+                    
+                    <div class="relative pl-8 border-l-2 border-primary/30">
+                        <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-primary"></div>
+                        <h4 class="text-xl font-bold">Bachelor's in Computer Science</h4>
+                        <p class="text-primary mb-2">University Name • 2012 - 2016</p>
+                        <p class="text-gray-400">
+                            Focused on algorithms, data structures, and web development.
+                            Participated in coding competitions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills -->
+<section class="py-24 px-6 bg-black/80">
+    <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-16 text-center">Skills & Expertise</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Backend -->
+            <div class="bg-black/40 p-8 rounded-xl border border-primary/20 hover:border-primary transition-all">
+                <h3 class="text-xl font-bold mb-6 text-primary">Backend Development</h3>
+                <ul class="space-y-3 text-gray-300">
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        Go (Fiber, Gin)
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        Node.js (Express)
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        Python (Django, Flask)
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        RESTful APIs
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        GraphQL
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Frontend -->
+            <div class="bg-black/40 p-8 rounded-xl border border-primary/20 hover:border-primary transition-all">
+                <h3 class="text-xl font-bold mb-6 text-primary">Frontend Development</h3>
+                <ul class="space-y-3 text-gray-300">
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        JavaScript/TypeScript
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        React.js
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        HTML/CSS
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        Tailwind CSS
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        HTMX
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Other Skills -->
+            <div class="bg-black/40 p-8 rounded-xl border border-primary/20 hover:border-primary transition-all">
+                <h3 class="text-xl font-bold mb-6 text-primary">Other Skills</h3>
+                <ul class="space-y-3 text-gray-300">
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        PostgreSQL, MySQL
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        Docker, Kubernetes
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        CI/CD (GitHub Actions)
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        AWS, Google Cloud
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                        Git, GitHub
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{{end}}
+
+{{define "scripts"}}
+<!-- Additional scripts for about page -->
+{{end}}

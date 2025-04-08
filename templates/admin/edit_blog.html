@@ -1,0 +1,275 @@
+{{template "admin" .}}
+
+{{define "admin-head"}}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+    .ql-editor {
+        min-height: 300px;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+    }
+    .ql-toolbar {
+        background-color: rgba(0, 0, 0, 0.8);
+        border-color: rgba(91, 209, 215, 0.2) !important;
+    }
+    .ql-container {
+        border-color: rgba(91, 209, 215, 0.2) !important;
+    }
+</style>
+{{end}}
+
+{{define "admin-content"}}
+<div class="space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">{{if .Blog.ID}}Edit Blog Post{{else}}Create New Blog Post{{end}}</h1>
+        <div class="flex space-x-3">
+            <a href="/admin/blogs" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                Cancel
+            </a>
+            {{if .Blog.ID}}
+            <a href="/blog/{{.Blog.Slug}}" target="_blank" class="px-4 py-2 bg-black/60 text-white rounded-lg hover:bg-black transition-colors">
+                <i class="fas fa-eye mr-2"></i> Preview
+            </a>
+            {{end}}
+        </div>
+    </div>
+    
+    <form id="blog-form" hx-{{if .Blog.ID}}put{{else}}post{{end}}="/admin/blogs/{{if .Blog.ID}}{{.Blog.ID}}{{end}}" hx-swap="none" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Main Content (2 columns) -->
+            <div class="md:col-span-2 space-y-6">
+                <!-- Title Input -->
+                <div>
+                    <label for="title" class="block mb-2 text-sm font-medium text-gray-300">Title</label>
+                    <input type="text" id="title" name="title" value="{{.Blog.Title}}" required
+                        class="w-full p-3 rounded-lg bg-black/60 border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary text-white outline-none">
+                </div>
+                
+                <!-- Slug Input -->
+                <div>
+                    <label for="slug" class="block mb-2 text-sm font-medium text-gray-300">
+                        Slug
+                        <span class="text-gray-500">(URL friendly version of title)</span>
+                    </label>
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-primary/20 bg-black/80 text-gray-400 text-sm">
+                            /blog/
+                        </span>
+                        <input type="text" id="slug" name="slug" value="{{.Blog.Slug}}" required
+                            class="flex-1 p-3 rounded-r-lg bg-black/60 border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary text-white outline-none">
+                    </div>
+                </div>
+                
+                <!-- Excerpt Input -->
+                <div>
+                    <label for="excerpt" class="block mb-2 text-sm font-medium text-gray-300">
+                        Excerpt
+                        <span class="text-gray-500">(Short summary for listings)</span>
+                    </label>
+                    <textarea id="excerpt" name="excerpt" rows="3"
+                        class="w-full p-3 rounded-lg bg-black/60 border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary text-white outline-none">{{.Blog.Excerpt}}</textarea>
+                </div>
+                
+                <!-- Content Editor -->
+                <div>
+                    <label for="content" class="block mb-2 text-sm font-medium text-gray-300">Content</label>
+                    <div id="editor">{{.Blog.Content}}</div>
+                    <input type="hidden" id="content" name="content" value="{{.Blog.Content}}">
+                </div>
+                
+                <!-- Tags Input -->
+                <div>
+                    <label for="tags" class="block mb-2 text-sm font-medium text-gray-300">
+                        Tags
+                        <span class="text-gray-500">(Comma separated)</span>
+                    </label>
+                    <input type="text" id="tags" name="tags" value="{{.Blog.Tags}}" 
+                        class="w-full p-3 rounded-lg bg-black/60 border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary text-white outline-none">
+                </div>
+            </div>
+            
+            <!-- Sidebar (1 column) -->
+            <div class="space-y-6">
+                <!-- Featured Image -->
+                <div class="bg-black/40 p-4 rounded-lg border border-primary/20">
+                    <h3 class="text-lg font-medium mb-4">Featured Image</h3>
+                    
+                    <div class="relative aspect-video mb-4 overflow-hidden rounded border border-primary/20">
+                        <img id="image-preview" src="{{if .Blog.Image}}{{.Blog.Image}}{{else}}/static/images/placeholder.jpg{{end}}" alt="Feature image preview" 
+                            class="w-full h-full object-cover" 
+                            onerror="this.src='https://via.placeholder.com/800x450?text=Blog+Image'">
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label for="image-upload" class="block w-full px-4 py-2 text-center bg-primary text-black rounded cursor-pointer hover:bg-primary/80 transition-colors">
+                            Choose Image
+                        </label>
+                        <input type="file" id="image-upload" class="hidden" accept="image/*">
+                        <input type="hidden" id="image" name="image" value="{{.Blog.Image}}">
+                        
+                        <p class="text-sm text-gray-400 text-center">Recommended size: 1200x630px</p>
+                    </div>
+                </div>
+                
+                <!-- Publication Settings -->
+                <div class="bg-black/40 p-4 rounded-lg border border-primary/20">
+                    <h3 class="text-lg font-medium mb-4">Publication Settings</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Published Status -->
+                        <div class="flex items-center justify-between">
+                            <label for="published" class="text-gray-300">Published</label>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="published" name="published" value="true" class="sr-only peer" {{if .Blog.Published}}checked{{end}}>
+                                <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50"></div>
+                                <span class="ml-3 text-sm text-gray-400 peer-checked:text-primary">{{if .Blog.Published}}Yes{{else}}No{{end}}</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Featured Status -->
+                        <div class="flex items-center justify-between">
+                            <label for="featured" class="text-gray-300">Featured</label>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="featured" name="featured" value="true" class="sr-only peer" {{if .Blog.Featured}}checked{{end}}>
+                                <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-purple-500 peer-focus:ring-2 peer-focus:ring-purple-500/50"></div>
+                                <span class="ml-3 text-sm text-gray-400 peer-checked:text-purple-400">{{if .Blog.Featured}}Yes{{else}}No{{end}}</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Publication Date -->
+                        <div>
+                            <label for="published_at" class="block mb-2 text-sm text-gray-300">Publication Date</label>
+                            <input type="datetime-local" id="published_at" name="published_at" value="{{.Blog.PublishedAt}}"
+                                class="w-full p-3 rounded-lg bg-black/60 border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary text-white outline-none">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Save Buttons -->
+                <div class="space-y-3">
+                    <button type="submit" 
+                            class="w-full px-6 py-3 bg-primary text-black font-semibold rounded-lg hover:bg-primary/80 transition-all">
+                        {{if .Blog.ID}}Update{{else}}Publish{{end}} Blog Post
+                    </button>
+                    
+                    {{if not .Blog.Published}}
+                    <button type="button" 
+                            hx-post="/admin/blogs/{{if .Blog.ID}}{{.Blog.ID}}/draft{{else}}draft{{end}}"
+                            hx-include="#blog-form"
+                            hx-swap="none"
+                            class="w-full px-6 py-3 bg-black/60 border border-primary/20 text-white font-semibold rounded-lg hover:border-primary transition-all">
+                        Save as Draft
+                    </button>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{end}}
+
+{{define "admin-scripts"}}
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Quill editor
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link', 'image', 'code-block'],
+                    ['clean']
+                ]
+            }
+        });
+        
+        // Update content field when editor changes
+        quill.on('text-change', function() {
+            document.getElementById('content').value = quill.root.innerHTML;
+        });
+        
+        // Handle image upload and preview
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const imageField = document.getElementById('image');
+        
+        imageUpload.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imageField.value = e.target.result; // Base64 data URL
+                    // In real implementation, you'd upload to server and get back a URL
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Toggle status labels
+        document.getElementById('published').addEventListener('change', function() {
+            this.nextElementSibling.nextElementSibling.textContent = this.checked ? 'Yes' : 'No';
+        });
+        
+        document.getElementById('featured').addEventListener('change', function() {
+            this.nextElementSibling.nextElementSibling.textContent = this.checked ? 'Yes' : 'No';
+        });
+        
+        // Auto-generate slug from title
+        document.getElementById('title').addEventListener('blur', function() {
+            const slugField = document.getElementById('slug');
+            if (!slugField.value || slugField.value === '') {
+                slugField.value = this.value
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .trim();
+            }
+        });
+        
+        // Form submission feedback
+        document.getElementById('blog-form').addEventListener('htmx:afterRequest', function(event) {
+            if (event.detail.successful) {
+                // Show success notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg';
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>Blog post ${event.target.id ? 'updated' : 'created'} successfully!</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    notification.remove();
+                    // Redirect to blogs list
+                    window.location.href = '/admin/blogs';
+                }, 2000);
+            } else {
+                // Show error notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-lg';
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>Error: ${event.detail.xhr.responseText}</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                // Remove notification after 5 seconds
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
+            }
+        });
+    });
+</script>
+{{end}}
